@@ -23,6 +23,18 @@ Solution: Visual Studio 2019 Build Tools only.
 
 ---
 
+## Step 0 — Verify venv is healthy
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip --version
+```
+If `pip` fails or `Scripts\` is missing files (activate.ps1, pip.exe), delete
+and recreate the venv before continuing — a partial venv wastes the full
+30-minute compile on an install that can't run.
+
+---
+
 ## Step 1 — Install VS 2019 Build Tools
 Installs alongside VS 2022, no conflicts:
 ```
@@ -47,8 +59,17 @@ Run in your **project venv terminal**:
 
 ```powershell
 $env:CMAKE_ARGS="-DGGML_CUDA=on -DCMAKE_CUDA_ARCHITECTURES=61 -G 'Visual Studio 16 2019'"
-pip install llama-cpp-python --no-cache-dir
+pip wheel llama-cpp-python --no-cache-dir -w ./dist
 ```
+
+Use `pip wheel`, not `pip install` — it leaves a reusable `.whl` file in
+`./dist` instead of only installing into this one venv. Copy it somewhere
+outside any venv immediately after compiling (venvs get deleted/recreated
+more often than you'd think, and there's no other copy of this file).
+
+To install it after building: `pip install .\dist\*.whl` (or, in
+PowerShell, `pip install (Get-ChildItem .\dist\*.whl).FullName` since
+PowerShell doesn't expand wildcards for external commands the way bash does).
 
 Flag breakdown:
 - `-DGGML_CUDA=on` — enable CUDA backend
@@ -56,6 +77,14 @@ Flag breakdown:
 - `-G 'Visual Studio 16 2019'` — force CMake to use VS 2019 not VS 2022
 
 Compile time: ~30 minutes on 1050 Ti. Normal. PTX assembler runs per kernel.
+
+**Portability note:** the wheel filename encodes the Python version it was
+built against (e.g. `cp311`, `cp312`). Compilation itself doesn't care which
+Python version you use, but the resulting wheel only installs into a venv
+running that same minor version — create a matching venv, or recompile, if
+you need it elsewhere. Don't be alarmed if the llama-cpp-python wheel itself
+shows `py3-none` instead of a cp-tagged name — that's fine, it's the
+dependency wheels (numpy, markupsafe) that are version-locked.
 
 ---
 
