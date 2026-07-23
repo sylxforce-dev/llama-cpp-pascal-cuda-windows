@@ -45,6 +45,7 @@ Select: C++ build tools workload only.
 ---
 
 ## Step 2 — Copy CUDA MSBuild Files
+**One-time per machine** — not repeated for future compiles once done.
 CUDA installer puts these in VS 2022 by default. VS 2019 needs them manually.
 Run in **admin PowerShell**:
 
