@@ -4,14 +4,13 @@
 ---
 
 ## Status / Disclaimer
-This is a blueprint, not a maintained project. It documents a working
-setup as of ~2 months ago (tested and confirmed working at that time on
-the hardware/versions listed in `COMPILE_REQUIREMENTS.md`). CUDA toolkit
+This is a blueprint, not a maintained project. Originally documented ~2
+months ago, and re-verified working end-to-end on 2026-07-22 (fresh venv,
+full recompile via `pip wheel`, tested with a small model). CUDA toolkit
 versions, VS Build Tools, and llama-cpp-python itself all update
-independently — I haven't re-verified this against the latest releases,
-so some steps may need adjustment by the time you read this. Worth trying
-if you're stuck on Pascal hardware, but go in expecting to troubleshoot
-version drift, not a guaranteed one-shot fix.
+independently, so treat this as "confirmed working as of the last
+verification date," not a permanent guarantee — expect to troubleshoot
+version drift eventually, just maybe not today.
 
 ---
 
