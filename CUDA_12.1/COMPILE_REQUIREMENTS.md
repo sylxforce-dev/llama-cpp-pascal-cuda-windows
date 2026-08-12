@@ -44,5 +44,5 @@ option.
 ## Performance vs Ollama
 | Backend | Simple query | Complex query |
 |---|---|---|
-| Ollama wrapper | 30+ seconds | 30+ seconds |
+| Ollama wrapper | 10+ seconds | 15+ seconds |
 | llama.cpp direct CUDA | ~3 seconds | 15-21 seconds |
