@@ -32,6 +32,5 @@ if something doesn't match your setup.
 ## Or: Path B — CUDA 12.6 + VS2022
  
 See `CUDA_12.6/COMPILE_REQUIREMENTS.md` and `CUDA_12.6/COMPILE_GUIDE.md`.
-Same hardware target, no VS2019 required, includes its own benchmark data
-and a note on a cache-related measurement error from an earlier draft.
+Same hardware target, no VS2019 required, includes its own benchmark data.
  
