@@ -19,7 +19,7 @@ error STL1002: Unexpected compiler version, expected CUDA 12.4 or newer.
 ```
 No flags bypass this. VS 2019 sidesteps that check entirely, which is why this guide uses CUDA 12.1 + VS2019 as a known-working combination.
  
-**Note on CUDA version:** This is a VS2022-vs-CUDA-version compatibility wall, not a Pascal architecture limitation — NVIDIA's own Pascal Compatibility Guide confirms Pascal (compute capability 6.0/6.1) is supported through the entire CUDA 12.x series, not just 12.1. In principle, CUDA 12.4+ paired with VS2019 (not VS2022) might also work on Pascal — that combination hasn't been tested here. 12.1 is documented because it's the version actually verified end-to-end on this hardware, not because it's a hard ceiling.
+**Note on CUDA version:** This is primarily a VS2022-vs-CUDA-version compatibility wall, not a Pascal architecture ceiling at exactly 12.1. Rechecked against NVIDIA's own release notes: CUDA 12.7 and earlier support Pascal (compute capability 6.0/6.1) cleanly and stably — no warnings, no asterisks. CUDA 12.8 and 12.9 are *usable* but not *stable* for Pascal: they compile and run, but NVIDIA has marked Maxwell/Pascal/Volta "feature-complete" and deprecated on those versions, meaning no further fixes will land for this hardware, and every offline compile emits a deprecation warning. CUDA 13.0 removes offline-compilation support for Pascal entirely — not usable at all. So in principle, CUDA 12.2–12.7 paired with VS2019 (not VS2022) might also work cleanly and stably on Pascal — that specific combination hasn't been tested here. 12.1 is documented because it's what was actually verified end-to-end on this hardware, not because it's the only stable option.
  
 ## Model Tested
 - gemma-4-E2B-it-Q4_K_M.gguf
