@@ -41,8 +41,3 @@ option.
 - GGUF V3, Q4_K_M quantization
 - Quantized by Unsloth
 
-## Performance vs Ollama
-| Backend | Simple query | Complex query |
-|---|---|---|
-| Ollama wrapper | 7+ seconds | 15+ seconds |
-| llama.cpp direct CUDA | ~3 seconds | 5-15 seconds |
