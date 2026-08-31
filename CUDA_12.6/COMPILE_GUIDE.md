@@ -24,24 +24,36 @@ python -m venv .venv
 pip uninstall llama-cpp-python -y
 ```
  
-## Step 2 — Point environment at CUDA 12.6 and compile
-```powershell
+# Step 2 — Point environment at CUDA 12.6 and compile
 $env:CUDA_PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6"
 $env:CUDA_PATH_V12_6="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6"
 $env:PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\bin;$env:PATH"
- 
+
+# Optional — force the build to use your exact physical core count.
+# Ninja/MSBuild will otherwise try to use every logical thread it sees,
+# which can overload weaker CPUs (especially older Pascal-era rigs).
+#
+# Check your own core count first: Task Manager > Performance > CPU,
+# or a tool like Core Temp / HWiNFO.
+#
+# Examples (physical cores → recommended value):
+#   i3-7100 (2 physical cores / 4 threads with HT)  -> 2
+#   4 physical cores (8 threads with HT)             -> 4
+#   6 physical cores (12 threads with HT)            -> 6
+#   8 physical cores (16 threads with HT)             -> 8
+#
+# Use the physical core count, not the thread count — hyperthreaded
+# "virtual" cores don't add real compute for CPU-bound compilation and
+# oversubscribing them can slow the build down instead of speeding it up.
+$env:CMAKE_BUILD_PARALLEL_LEVEL="2"   # <- replace with your own physical core count
+
 # -T cuda=12.6 is required — without it, MSBuild silently falls back to
 # whichever CUDA toolset was registered first (often an older version),
 # even if CUDAToolkit_ROOT points at 12.6.
 $env:CMAKE_ARGS="-DGGML_CUDA=on -DCMAKE_CUDA_ARCHITECTURES=61 -T cuda=12.6"
 pip wheel llama-cpp-python --no-cache-dir -w ./dist_cuda126
- 
+
 pip install (Get-ChildItem .\dist_cuda126\*.whl).FullName
-```
- 
-Use `pip wheel`, not `pip install` directly — it leaves a reusable `.whl` in
-`./dist_cuda126`. Copy it somewhere outside the venv once built.
- 
 ---
  
 ## Step 3 — Test
