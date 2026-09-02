@@ -21,8 +21,14 @@ alternate toolchain for people who'd rather not install a second VS version.
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+ 
+# If you have an OLD llama-cpp-python wheel installed already (PyPI CPU
+# version, or a previous custom CUDA build), uninstall it first so the
+# new custom build starts clean. On a brand-new venv this is a no-op —
+# skip it if you know your venv has nothing installed yet.
 pip uninstall llama-cpp-python -y
 ```
+ 
  
 ## Step 2 — Point environment at CUDA 12.6 and compile
  
