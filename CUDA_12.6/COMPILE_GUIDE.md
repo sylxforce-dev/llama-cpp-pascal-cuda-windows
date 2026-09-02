@@ -23,6 +23,11 @@ pip uninstall llama-cpp-python -y
  
 ## Step 2 — Point environment at CUDA 12.6 and compile
  
+**Run all of Step 2 in the SAME PowerShell window where you activated the
+venv in Step 1.** `$env:` variables only last for the lifetime of that one
+terminal session — if you close this window and open a new one, these
+values are gone and you'll need to set them again before compiling.
+ 
 ```powershell
 # These three point the build at CUDA 12.6 specifically, in case you have
 # multiple CUDA Toolkit versions installed side-by-side (common if you've
@@ -64,6 +69,9 @@ pip wheel llama-cpp-python --no-cache-dir -w ./dist_cuda126
  
 pip install (Get-ChildItem .\dist_cuda126\*.whl).FullName
 ```
+ 
+Use `pip wheel`, not `pip install` directly — it leaves a reusable `.whl` in `./dist_cuda126`. Copy it somewhere outside the venv once built.
+ 
  
 Use `pip wheel`, not `pip install` directly — it leaves a reusable `.whl` in `./dist_cuda126`. Copy it somewhere outside the venv once built.
  
