@@ -24,6 +24,16 @@ pip uninstall llama-cpp-python -y
 ## Step 2 — Point environment at CUDA 12.6 and compile
  
 ```powershell
+# These three point the build at CUDA 12.6 specifically, in case you have
+# multiple CUDA Toolkit versions installed side-by-side (common if you've
+# tried other guides/versions before). Without this, the build system can
+# pick up whichever CUDA version happens to be first on PATH, silently
+# compiling against the wrong one.
+#   CUDA_PATH          - generic path some tools/scripts check
+#   CUDA_PATH_V12_6     - version-specific path some tools check instead
+#   PATH (prepended)    - makes sure `nvcc` and other CUDA binaries found
+#                         on the command line resolve to 12.6, not another
+#                         installed version
 $env:CUDA_PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6"
 $env:CUDA_PATH_V12_6="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6"
 $env:PATH="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.6\bin;$env:PATH"
@@ -56,6 +66,7 @@ pip install (Get-ChildItem .\dist_cuda126\*.whl).FullName
 ```
  
 Use `pip wheel`, not `pip install` directly — it leaves a reusable `.whl` in `./dist_cuda126`. Copy it somewhere outside the venv once built.
+ 
  
 Compile time: varies roughly 10–30 minutes on 1050 Ti depending on how many physical cores your CPU has and whether you set `CMAKE_BUILD_PARALLEL_LEVEL` above. If you leave it at default (no physical core count set), expect the build to take around 30 minutes. Normal. PTX assembler runs per kernel.
  
