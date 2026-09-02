@@ -79,7 +79,11 @@ To install it after building: `pip install .\dist\*.whl` (or, in PowerShell, `pi
 - `-DGGML_CUDA=on` — enable CUDA backend
 - `-DCMAKE_CUDA_ARCHITECTURES=61` — target Pascal (compute capability 6.1)
 - `-G 'Visual Studio 16 2019'` — force CMake to use VS 2019 not VS 2022
-Compile time: ~30 minutes on 1050 Ti. Normal. PTX assembler runs per kernel.
+Compile time: varies roughly 10–30 minutes on 1050 Ti depending on how many
+physical cores your CPU has and whether you set `CMAKE_BUILD_PARALLEL_LEVEL`
+above. If you leave it at default (no physical core count set), expect the
+build to take around 30 minutes. Normal. PTX assembler runs per kernel.
+ 
  
 **Portability note:** the wheel filename encodes the Python version it was built against (e.g. `cp311`, `cp312`). Compilation itself doesn't care which Python version you use, but the resulting wheel only installs into a venv running that same minor version — create a matching venv, or recompile, if you need it elsewhere. Don't be alarmed if the llama-cpp-python wheel itself shows `py3-none` instead of a `cp`-tagged name — that's fine, it's the dependency wheels (numpy, markupsafe) that are version-locked.
  
