@@ -18,6 +18,12 @@ For the full CUDA/VS compatibility breakdown (why 12.1 specifically, what 12.7 /
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip --version
+ 
+# If you have an OLD llama-cpp-python wheel installed already (PyPI CPU
+# version, or a previous custom CUDA build), uninstall it first so the
+# new custom build starts clean. On a brand-new venv this is a no-op —
+# skip it if you know your venv has nothing installed yet.
+pip uninstall llama-cpp-python -y
 ```
  
 If pip fails or `Scripts\` is missing files (`activate.ps1`, `pip.exe`), delete and recreate the venv before continuing — a partial venv wastes the full 30-minute compile on an install that can't run.
@@ -43,6 +49,24 @@ Copy-Item "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.1/extras/visua
 Run in your project venv terminal:
  
 ```powershell
+# Optional — force the build to use your exact physical core count.
+# Ninja/MSBuild will otherwise try to use every logical thread it sees,
+# which can overload weaker CPUs (especially older Pascal-era rigs).
+#
+# Check your own core count first: Task Manager > Performance > CPU,
+# or a tool like Core Temp / HWiNFO.
+#
+# Examples (physical cores -> recommended value):
+#   i3-7100 (2 physical cores / 4 threads with HT)  -> 2
+#   4 physical cores (8 threads with HT)             -> 4
+#   6 physical cores (12 threads with HT)            -> 6
+#   8 physical cores (16 threads with HT)            -> 8
+#
+# Use the physical core count, not the thread count — hyperthreaded
+# "virtual" cores don't add real compute for CPU-bound compilation and
+# oversubscribing them can slow the build down instead of speeding it up.
+$env:CMAKE_BUILD_PARALLEL_LEVEL="2"   # <- replace with your own physical core count
+ 
 $env:CMAKE_ARGS="-DGGML_CUDA=on -DCMAKE_CUDA_ARCHITECTURES=61 -G 'Visual Studio 16 2019'"
 pip wheel llama-cpp-python --no-cache-dir -w ./dist
 ```
