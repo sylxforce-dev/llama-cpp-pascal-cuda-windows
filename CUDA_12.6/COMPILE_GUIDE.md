@@ -131,6 +131,5 @@ your setup, not on an expected performance gain.
 ## Notes
 - Wheel is tied to your venv/Python minor version — recompile or match venv
   version for other projects.
-- RTX 5060 / Ampere+: skip all of this, standard compile works natively.
 - AMD cards: not covered here.
  
