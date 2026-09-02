@@ -69,11 +69,11 @@ pip wheel llama-cpp-python --no-cache-dir -w ./dist_cuda126
  
 
 ```
- pip install (Get-ChildItem .\dist_cuda126\*.whl).FullName
- 
-Use `pip wheel`, not `pip install` directly — it leaves a reusable `.whl` in `./dist_cuda126`. Copy it somewhere outside the venv once built.
- 
+After the build completes successfully, install the generated wheel:
 
+pip install (Get-ChildItem .\dist_cuda126\*.whl).FullName
+
+Using pip wheel instead of pip install creates a reusable .whl package in ./dist_cuda126, which can be copied and installed later without rebuilding.
  
  
 Compile time: varies roughly 10–30 minutes on 1050 Ti depending on how many physical cores your CPU has and whether you set `CMAKE_BUILD_PARALLEL_LEVEL` above. If you leave it at default (no physical core count set), expect the build to take around 30 minutes. Normal. PTX assembler runs per kernel.
