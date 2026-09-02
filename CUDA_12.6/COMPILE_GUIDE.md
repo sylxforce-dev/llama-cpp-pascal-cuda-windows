@@ -67,8 +67,9 @@ $env:CMAKE_BUILD_PARALLEL_LEVEL="2"   # <- replace with your own physical core c
 $env:CMAKE_ARGS="-DGGML_CUDA=on -DCMAKE_CUDA_ARCHITECTURES=61 -T cuda=12.6"
 pip wheel llama-cpp-python --no-cache-dir -w ./dist_cuda126
  
-pip install (Get-ChildItem .\dist_cuda126\*.whl).FullName
+
 ```
+ pip install (Get-ChildItem .\dist_cuda126\*.whl).FullName
  
 Use `pip wheel`, not `pip install` directly — it leaves a reusable `.whl` in `./dist_cuda126`. Copy it somewhere outside the venv once built.
  
