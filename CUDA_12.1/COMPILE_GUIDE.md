@@ -82,7 +82,6 @@ Process finished with exit code 0
 ## Notes
  
 - Wheel is tied to your venv. Other projects need recompile with same commands.
-- RTX 5060 / Ampere+: skip all of this, standard compile works natively.
 - AMD cards: different problem entirely. Not covered here.
 - CUDA 12.1 + VS2019 is what's verified here — not necessarily the only working combination. CUDA 12.6 + VS2022 is now also verified (separate guide, see above) with comparable performance. VS2019 paired with anything newer than 12.1 remains untested.
 - This guide exists because nobody else documented this specific combination.
